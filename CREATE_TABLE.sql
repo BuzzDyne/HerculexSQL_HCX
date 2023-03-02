@@ -13,17 +13,18 @@
     -- Order_TM
         CREATE TABLE IF NOT EXISTS Order_TM (
             id                  INT AUTO_INCREMENT PRIMARY KEY,
-            ecommerce_source    VARCHAR(10),
-            internal_label      VARCHAR(50),
+            ecommerce_code    	VARCHAR(1),
             cust_phone_no       VARCHAR(50),
             feeding_dt          DATETIME,
-            deadline_dt         DATETIME,
+            user_deadline_dt    DATETIME,
+            pltf_deadline_dt    DATETIME,
             design_acc_dt       DATETIME,
             print_done_dt       DATETIME,
 
             buyer_id            VARCHAR(50),
-            invoice_ref         VARCHAR(50),
-            order_status        VARCHAR(3)
+            ecom_order_id	VARCHAR(100),
+            ecom_order_status	VARCHAR(10),
+            invoice_ref         VARCHAR(50)
         )  ENGINE=INNODB;
 
     -- OrderItem_TR
