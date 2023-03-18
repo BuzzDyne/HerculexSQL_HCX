@@ -1,7 +1,7 @@
 
 -- Deployment
-    -- User_TM
-        CREATE TABLE IF NOT EXISTS User_TM (
+    -- user_tm
+        CREATE TABLE IF NOT EXISTS user_tm (
             id              INT AUTO_INCREMENT PRIMARY KEY,
             created_dt      DATETIME,
             last_login_dt   DATETIME,
@@ -10,8 +10,8 @@
             password        CHAR(40)
         )  ENGINE=INNODB;
 
-    -- Order_TM
-        CREATE TABLE IF NOT EXISTS Order_TM (
+    -- order_tm
+        CREATE TABLE IF NOT EXISTS order_tm (
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             ecommerce_code    	VARCHAR(1),
             cust_phone_no       VARCHAR(50),
@@ -27,8 +27,8 @@
             invoice_ref         VARCHAR(50)
         )  ENGINE=INNODB;
 
-    -- OrderItem_TR
-        CREATE TABLE IF NOT EXISTS OrderItem_TR (
+    -- orderitem_tr
+        CREATE TABLE IF NOT EXISTS orderitem_tr (
             id              INT AUTO_INCREMENT PRIMARY KEY,
             order_id        INT NOT NULL, -- Order.id
             product_id      VARCHAR(200), -- Dari eCommerce
@@ -37,8 +37,8 @@
             product_price   DECIMAL
         )  ENGINE=INNODB;
 
-    -- OrderThumbnail_TR
-        CREATE TABLE IF NOT EXISTS OrderThumbnail_TR (
+    -- orderthumbnail_tr
+        CREATE TABLE IF NOT EXISTS orderthumbnail_tr (
             id              INT AUTO_INCREMENT PRIMARY KEY,
             order_id        INT NOT NULL, -- Order.id
             url             VARCHAR(200),
@@ -46,8 +46,8 @@
             created_dt      DATETIME
         )  ENGINE=INNODB;
 
-    -- OrderActivity_TR
-        CREATE TABLE IF NOT EXISTS OrderActivity_TR (
+    -- orderactivity_tr
+        CREATE TABLE IF NOT EXISTS orderactivity_tr (
             id              INT AUTO_INCREMENT PRIMARY KEY,
             order_id        INT NOT NULL, -- Order.id
             creator_id      INT NOT NULL, -- User.id
@@ -55,8 +55,8 @@
             created_dt      DATETIME
         )  ENGINE=INNODB;
 
-    -- GlobalParam_TM
-        CREATE TABLE IF NOT EXISTS GlobalParam_TM (
+    -- globalparam_tm
+        CREATE TABLE IF NOT EXISTS globalparam_tm (
             id              INT AUTO_INCREMENT PRIMARY KEY,
             app_name        VARCHAR(200),
             param_name1      VARCHAR(200),
@@ -67,19 +67,19 @@
             param_value3     VARCHAR(200)
         )  ENGINE=INNODB;
     
-    -- GlobalLogging_TH
-        CREATE TABLE IF NOT EXISTS GlobalLogging_TH (
+    -- globallogging_TH
+        CREATE TABLE IF NOT EXISTS globallogging_TH (
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             application_name    VARCHAR(50),
             activity_date       DATETIME,
             activity_type       VARCHAR(50),
             description         VARCHAR(255)
-        )
+        )  ENGINE=INNODB;
 
-    -- HCXProcessSyncStatus_TM
-        CREATE TABLE IF NOT EXISTS HCXProcessSyncStatus_TM (
+    -- hcxprocesssyncstatus_tm
+        CREATE TABLE IF NOT EXISTS hcxprocesssyncstatus_tm (
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             platform_name       VARCHAR(50),
             initial_sync        DATETIME,
             last_synced         DATETIME
-        )
+        )  ENGINE=INNODB;
