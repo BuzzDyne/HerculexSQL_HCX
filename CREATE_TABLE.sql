@@ -22,7 +22,7 @@
             print_done_dt       DATETIME,
 
             buyer_id            VARCHAR(50),
-            ecom_order_id	VARCHAR(100),
+            ecom_order_id	    VARCHAR(100),
             ecom_order_status	VARCHAR(10),
             invoice_ref         VARCHAR(50)
         )  ENGINE=INNODB;
@@ -30,8 +30,8 @@
     -- orderitem_tr
         CREATE TABLE IF NOT EXISTS orderitem_tr (
             id              INT AUTO_INCREMENT PRIMARY KEY,
-            order_id        INT NOT NULL, -- Order.id
-            product_id      VARCHAR(200), -- Dari eCommerce
+            ecom_order_id   INT NOT NULL, -- Order.id
+            ecom_product_id VARCHAR(200), -- Dari eCommerce
             product_name    VARCHAR(200),
             quantity        INT,
             product_price   DECIMAL
