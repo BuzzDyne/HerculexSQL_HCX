@@ -69,7 +69,7 @@
         )  ENGINE=INNODB;
     
     -- globallogging_TH
-        CREATE TABLE IF NOT EXISTS globallogging_TH (
+        CREATE TABLE IF NOT EXISTS globallogging_th (
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             application_name    VARCHAR(50),
             activity_date       DATETIME,
