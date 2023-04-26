@@ -5,9 +5,15 @@
             id              INT AUTO_INCREMENT PRIMARY KEY,
             created_dt      DATETIME,
             last_login_dt   DATETIME,
-            role            VARCHAR(20),
+            role_id         INT,
             username        VARCHAR(20),
             password        CHAR(40)
+        )  ENGINE=INNODB;
+    
+    -- role_tm
+		    CREATE TABLE IF NOT EXISTS role_tm (
+            id              INT AUTO_INCREMENT PRIMARY KEY,
+			      role_name		    VARCHAR(20)
         )  ENGINE=INNODB;
 
     -- order_tm
@@ -84,3 +90,17 @@
             initial_sync        DATETIME,
             last_synced         DATETIME
         )  ENGINE=INNODB;
+
+-- Param
+	insert into hcxprocesssyncstatus_tm(platform_name, initial_sync)
+	select "TOKOPEDIA", "2023-03-10"
+	from dual
+    WHERE NOT EXISTS (SELECT * FROM hcxprocesssyncstatus_tm WHERE platform_name = "TOKOPEDIA");
+    
+	insert into role_tm(role_name)
+	select "admin" 		UNION ALL
+    select "designer" 	UNION ALL
+    select "printer" 	UNION ALL
+    select "packer"
+    from dual
+    WHERE NOT EXISTS (SELECT * FROM role_tm);
