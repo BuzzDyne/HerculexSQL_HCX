@@ -7,7 +7,7 @@
             last_login_dt   DATETIME,
             role_id         INT,
             username        VARCHAR(20),
-            password        CHAR(40)
+            password        VARCHAR(60)
         )  ENGINE=INNODB;
     
     -- role_tm
@@ -104,3 +104,6 @@
     select "packer"
     from dual
     WHERE NOT EXISTS (SELECT * FROM role_tm);
+
+    insert into user_tm(created_dt, role_id, username, password)
+    select now(), 1, 'admin', '$2a$12$mrrY0mbxb8L35bVkKBMIVeUuWdiqcbDiYjtR5qucxh3y2v50ZqGKu';
