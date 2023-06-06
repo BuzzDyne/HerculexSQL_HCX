@@ -25,23 +25,35 @@
             last_updated_ts     DATETIME,
             user_deadline_dt    DATETIME,
             pltf_deadline_dt    DATETIME,
+            initial_input_dt    DATETIME,
             design_acc_dt       DATETIME,
             print_done_dt       DATETIME,
+            packing_done_dt     DATETIME,
+            shipped_dt          DATETIME,
 
             buyer_id            VARCHAR(50),
-            ecom_order_id	    VARCHAR(100),
-            ecom_order_status	VARCHAR(10),
+            ecom_order_id	      VARCHAR(100),
+            ecom_order_status	  VARCHAR(10),
             invoice_ref         VARCHAR(50)
         )  ENGINE=INNODB;
 
     -- orderitem_tr
         CREATE TABLE IF NOT EXISTS orderitem_tr (
             id              INT AUTO_INCREMENT PRIMARY KEY,
-            ecom_order_id   INT NOT NULL, -- Order.id
-            ecom_product_id VARCHAR(200), -- Dari eCommerce
+            ecom_order_id   INT NOT NULL,
+            ecom_product_id VARCHAR(200),
             product_name    VARCHAR(200),
             quantity        INT,
             product_price   DECIMAL
+        )  ENGINE=INNODB;
+
+    -- ordertracking_th
+        CREATE TABLE IF NOT EXISTS ordertracking_th (
+            id              INT AUTO_INCREMENT PRIMARY KEY,
+            order_id        INT NOT NULL, -- Order.id
+            activity_date   DATETIME,
+            activity_msg    TEXT,
+            user_id         INT
         )  ENGINE=INNODB;
 
     -- orderthumbnail_tr
