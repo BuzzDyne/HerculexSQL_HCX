@@ -30,6 +30,8 @@
             print_done_dt       DATETIME,
             packing_done_dt     DATETIME,
             shipped_dt          DATETIME,
+            folder_url          VARCHAR(2000),
+            thumb_url           VARCHAR(2000),
 
             buyer_id            VARCHAR(50),
             ecom_order_id	      VARCHAR(100),
