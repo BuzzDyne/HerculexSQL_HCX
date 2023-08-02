@@ -27,10 +27,12 @@
             pltf_deadline_dt    DATETIME,
             initial_input_dt    DATETIME,
             design_acc_dt       DATETIME,
+            design_sub_dt       DATETIME,
             print_done_dt       DATETIME,
             packing_done_dt     DATETIME,
             shipped_dt          DATETIME,
-            folder_url          VARCHAR(2000),
+            google_folder_url   VARCHAR(2000),
+            google_file_url     VARCHAR(2000),
             thumb_url           VARCHAR(2000),
 
             buyer_id            VARCHAR(50),
