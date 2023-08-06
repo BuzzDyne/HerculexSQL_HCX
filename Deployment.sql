@@ -13,7 +13,7 @@
     -- role_tm
 		    CREATE TABLE IF NOT EXISTS role_tm (
             id              INT AUTO_INCREMENT PRIMARY KEY,
-			      role_name		    VARCHAR(20)
+            role_name		    VARCHAR(20)
         )  ENGINE=INNODB;
 
     -- order_tm
@@ -109,7 +109,7 @@
 
 -- Param
 	insert into hcxprocesssyncstatus_tm(platform_name, initial_sync)
-	select "TOKOPEDIA", "1691298000"
+	select "TOKOPEDIA", "1691107200"
 	from dual
     WHERE NOT EXISTS (SELECT * FROM hcxprocesssyncstatus_tm WHERE platform_name = "TOKOPEDIA");
     
@@ -122,4 +122,5 @@
     WHERE NOT EXISTS (SELECT * FROM role_tm);
 
     insert into user_tm(created_dt, role_id, username, password)
-    select now(), 1, 'admin', '$2a$12$mrrY0mbxb8L35bVkKBMIVeUuWdiqcbDiYjtR5qucxh3y2v50ZqGKu';
+    select now(), NULL, 'System', NULL UNION ALL
+    select now(), 1,    'admin', '$2a$12$mrrY0mbxb8L35bVkKBMIVeUuWdiqcbDiYjtR5qucxh3y2v50ZqGKu';
