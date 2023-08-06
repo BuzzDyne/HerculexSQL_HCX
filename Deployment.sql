@@ -55,7 +55,7 @@
         CREATE TABLE IF NOT EXISTS ordertracking_th (
             id              INT AUTO_INCREMENT PRIMARY KEY,
             order_id        INT NOT NULL, -- Order.id
-            activity_date   DATETIME,
+            activity_date   DATETIME DEFAULT CURRENT_TIMESTAMP,
             activity_msg    TEXT,
             user_id         INT
         )  ENGINE=INNODB;
@@ -103,13 +103,13 @@
         CREATE TABLE IF NOT EXISTS hcxprocesssyncstatus_tm (
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             platform_name       VARCHAR(50),
-            initial_sync        DATETIME,
-            last_synced         DATETIME
+            initial_sync        BIGINT,
+            last_synced         BIGINT
         )  ENGINE=INNODB;
 
 -- Param
 	insert into hcxprocesssyncstatus_tm(platform_name, initial_sync)
-	select "TOKOPEDIA", "2023-03-10"
+	select "TOKOPEDIA", "1691298000"
 	from dual
     WHERE NOT EXISTS (SELECT * FROM hcxprocesssyncstatus_tm WHERE platform_name = "TOKOPEDIA");
     
