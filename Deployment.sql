@@ -23,7 +23,7 @@
             cust_phone_no       VARCHAR(50),
             feeding_dt          DATETIME,
             last_updated_ts     DATETIME,
-            user_deadline_dt    DATETIME,
+            user_deadline_prd   VARCHAR(8),
             pltf_deadline_dt    DATETIME,
             initial_input_dt    DATETIME,
             design_acc_dt       DATETIME,
