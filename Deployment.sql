@@ -20,8 +20,14 @@
         CREATE TABLE IF NOT EXISTS order_tm (
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             ecommerce_code    	VARCHAR(1),
+            ecom_order_id	    VARCHAR(100),
+            ecom_order_status   VARCHAR(100),
+            internal_status_id  VARCHAR(3),
+            pic_user_id         INT,
             cust_phone_no       VARCHAR(50),
             feeding_dt          DATETIME,
+            buyer_id            VARCHAR(50),
+            invoice_ref         VARCHAR(50),
             last_updated_ts     DATETIME,
             user_deadline_prd   VARCHAR(8),
             pltf_deadline_dt    DATETIME,
@@ -33,22 +39,18 @@
             shipped_dt          DATETIME,
             google_folder_url   VARCHAR(2000),
             google_file_url     VARCHAR(2000),
-            thumb_url           VARCHAR(2000),
-
-            buyer_id            VARCHAR(50),
-            ecom_order_id	      VARCHAR(100),
-            ecom_order_status	  VARCHAR(10),
-            invoice_ref         VARCHAR(50)
+            thumb_url           VARCHAR(2000)
         )  ENGINE=INNODB;
 
     -- orderitem_tr
         CREATE TABLE IF NOT EXISTS orderitem_tr (
             id              INT AUTO_INCREMENT PRIMARY KEY,
-            ecom_order_id   INT NOT NULL,
+            ecom_order_id   VARCHAR(100) NOT NULL,
             ecom_product_id VARCHAR(200),
             product_name    VARCHAR(200),
             quantity        INT,
-            product_price   DECIMAL
+            product_price   DECIMAL,
+            thumb_url       VARCHAR(2000)
         )  ENGINE=INNODB;
 
     -- ordertracking_th
@@ -104,8 +106,21 @@
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             platform_name       VARCHAR(50),
             initial_sync        BIGINT,
-            last_synced         BIGINT
+            last_synced         BIGINT,
+            access_token        VARCHAR(32),
+            refresh_token       VARCHAR(32),
+            refresh_token_expire_YYYYMMDD VARCHAR(32)
         )  ENGINE=INNODB;
+
+
+    -- ordercomment_th
+        CREATE TABLE IF NOT EXISTS ordercomment_th (
+            id              INT AUTO_INCREMENT PRIMARY KEY,
+            creator_id      INT NOT NULL,
+            order_id        INT NOT NULL,
+            comment_text    TEXT,
+            comment_date    DATETIME DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=INNODB;
 
 -- Param
 	insert into hcxprocesssyncstatus_tm(platform_name, initial_sync)
@@ -113,6 +128,11 @@
 	from dual
     WHERE NOT EXISTS (SELECT * FROM hcxprocesssyncstatus_tm WHERE platform_name = "TOKOPEDIA");
     
+    INSERT INTO hcxprocesssyncstatus_tm(platform_name)
+    SELECT "SHOPEE"
+    FROM dual
+    WHERE NOT EXISTS (SELECT * FROM hcxprocesssyncstatus_tm WHERE platform_name = "SHOPEE");
+
 	insert into role_tm(role_name)
 	select "admin" 		UNION ALL
     select "designer" 	UNION ALL
@@ -124,3 +144,11 @@
     insert into user_tm(created_dt, role_id, username, password)
     select now(), NULL, 'System', NULL UNION ALL
     select now(), 1,    'admin', '$2a$12$mrrY0mbxb8L35bVkKBMIVeUuWdiqcbDiYjtR5qucxh3y2v50ZqGKu';
+
+    INSERT INTO globalparam_tm (app_name, param_name1, param_value1)
+    SELECT "INTERNAL_ORDER_STATUS", "000", "New Order"          UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "100", "Waiting Design"     UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "200", "Pending Approval"   UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "300", "Printing"           UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "400", "Packing"            UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "999", "Complete";
