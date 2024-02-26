@@ -24,6 +24,7 @@
             ecom_order_status   VARCHAR(100),
             internal_status_id  VARCHAR(3),
             pic_user_id         INT,
+            batchfile_id        INT,
             cust_phone_no       VARCHAR(50),
             feeding_dt          DATETIME,
             buyer_id            VARCHAR(50),
@@ -34,6 +35,7 @@
             initial_input_dt    DATETIME,
             design_acc_dt       DATETIME,
             design_sub_dt       DATETIME,
+            batch_done_dt       DATETIME,
             print_done_dt       DATETIME,
             packing_done_dt     DATETIME,
             shipped_dt          DATETIME,
@@ -80,6 +82,16 @@
             created_dt      DATETIME
         )  ENGINE=INNODB;
 
+    -- orderbatchfile_tm
+        CREATE TABLE IF NOT EXISTS orderbatchfile_tm (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            batch_name          VARCHAR(10),
+            remarks             TEXT,
+            create_dt           DATETIME,
+            printed_dt          DATETIME,
+            designer_user_id    INT,
+            printer_user_id     INT
+        )  ENGINE=INNODB;
     -- globalparam_tm
         CREATE TABLE IF NOT EXISTS globalparam_tm (
             id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -149,6 +161,7 @@
     SELECT "INTERNAL_ORDER_STATUS", "000", "New Order"          UNION ALL
     SELECT "INTERNAL_ORDER_STATUS", "100", "Waiting Design"     UNION ALL
     SELECT "INTERNAL_ORDER_STATUS", "200", "Pending Approval"   UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "250", "Pending BatchFile"  UNION ALL
     SELECT "INTERNAL_ORDER_STATUS", "300", "Printing"           UNION ALL
     SELECT "INTERNAL_ORDER_STATUS", "400", "Packing"            UNION ALL
     SELECT "INTERNAL_ORDER_STATUS", "999", "Complete";
