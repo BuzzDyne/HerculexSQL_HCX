@@ -134,6 +134,58 @@
             comment_date    DATETIME DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=INNODB;
 
+    -- orderdocument_tm
+        CREATE TABLE IF NOT EXISTS orderdocument_tm (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            order_id            INT,
+            doc_number          VARCHAR(100),
+            doc_type            VARCHAR(1),
+            cust_name           VARCHAR(30),
+            cust_addr_1         VARCHAR(45),
+            cust_addr_2         VARCHAR(45),
+            cust_addr_3         VARCHAR(45),
+            cust_addr_4         VARCHAR(45),
+            cust_phone          VARCHAR(30),
+            cust_fax            VARCHAR(30),
+            due_date            VARCHAR(30),
+            discount            DECIMAL,
+            generated_date		DATETIME
+        ) ENGINE=INNODB;
+
+    -- orderdocumentitem_tr
+        CREATE TABLE IF NOT EXISTS orderdocumentitem_tr (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            order_doc_id        INT,
+            item_name           VARCHAR(60),
+            item_price          DECIMAL,
+            item_qty            INT
+        ) ENGINE=INNODB;
+
+    -- orderanku_item_tm
+        CREATE TABLE IF NOT EXISTS orderanku_item_tm (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            creation_data       DATETIME,
+            recipient_name      VARCHAR(100),
+            recipient_provinsi  VARCHAR(50),
+            recipient_kota_kab  VARCHAR(50),
+            recipient_kecamatan VARCHAR(50),
+            recipient_kelurahan VARCHAR(50),
+            recipient_address   VARCHAR(200),
+            order_details       VARCHAR(1000),
+            order_total         DECIMAL,
+            created_date		DATETIME,
+            print_date          DATETIME,
+            paid_date           DATETIME,
+            seller_id           INT    
+        );
+
+    -- orderanku_seller_tr
+        CREATE TABLE IF NOT EXISTS orderanku_seller_tr (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            seller_name         VARCHAR(100),
+            seller_phone        VARCHAR(20)
+        )
+
 -- Param
 	insert into hcxprocesssyncstatus_tm(platform_name, initial_sync)
 	select "TOKOPEDIA", "1691107200"
