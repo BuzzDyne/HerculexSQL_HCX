@@ -2,7 +2,6 @@ USE sql_hcx;
 
 CREATE TABLE IF NOT EXISTS orderanku_item_tm (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    creation_data       DATETIME,
     recipient_name      VARCHAR(100),
     recipient_provinsi  VARCHAR(50),
     recipient_kota_kab  VARCHAR(50),
