@@ -14,15 +14,15 @@ CREATE TABLE IF NOT EXISTS orderanku_item_tm (
     created_date		DATETIME,
     print_date          DATETIME,
     paid_date           DATETIME,
-    seller_id           INT,    
+    seller_name         VARCHAR(100),
+    seller_phone        VARCHAR(20),
     is_active           BIT DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS orderanku_seller_tr (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     seller_name         VARCHAR(100),
-    seller_phone        VARCHAR(20),
-    is_active           BIT DEFAULT 1
+    seller_phone        VARCHAR(20)
 );
 
 

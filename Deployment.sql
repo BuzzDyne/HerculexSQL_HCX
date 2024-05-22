@@ -176,7 +176,9 @@
             created_date		DATETIME,
             print_date          DATETIME,
             paid_date           DATETIME,
-            seller_id           INT    
+            seller_name         VARCHAR(100),
+            seller_phone        VARCHAR(20),
+            is_active           BIT DEFAULT 1
         );
 
     -- orderanku_seller_tr
@@ -217,3 +219,10 @@
     SELECT "INTERNAL_ORDER_STATUS", "300", "Printing"           UNION ALL
     SELECT "INTERNAL_ORDER_STATUS", "400", "Packing"            UNION ALL
     SELECT "INTERNAL_ORDER_STATUS", "999", "Complete";
+
+    INSERT INTO orderanku_seller_tr (id, seller_name, seller_phone, is_active)
+    VALUES (1, 'Herculex', '08151912345', 1) AS new
+    ON DUPLICATE KEY UPDATE
+    seller_name = new.seller_name,
+    seller_phone = new.seller_phone,
+    is_active = new.is_active;
