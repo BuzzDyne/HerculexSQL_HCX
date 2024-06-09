@@ -28,9 +28,8 @@ CREATE TABLE IF NOT EXISTS orderanku_seller_tr (
 
 
 -- Parameter
-INSERT INTO orderanku_seller_tr (id, seller_name, seller_phone, is_active)
-VALUES (1, 'Herculex', '08151912345', 1) AS new
+INSERT INTO orderanku_seller_tr (id, seller_name, seller_phone)
+VALUES (1, 'Herculex', '08151912345') AS new
 ON DUPLICATE KEY UPDATE
 seller_name = new.seller_name,
-seller_phone = new.seller_phone,
-is_active = new.is_active;
+seller_phone = new.seller_phone;
