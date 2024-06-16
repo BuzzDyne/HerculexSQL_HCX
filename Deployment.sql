@@ -20,35 +20,39 @@
         CREATE TABLE IF NOT EXISTS order_tm (
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             ecommerce_code    	VARCHAR(1),
+            ecom_order_id	    VARCHAR(100),
+            ecom_order_status   VARCHAR(100),
+            internal_status_id  VARCHAR(3),
+            pic_user_id         INT,
+            batchfile_id        INT,
             cust_phone_no       VARCHAR(50),
             feeding_dt          DATETIME,
+            buyer_id            VARCHAR(50),
+            invoice_ref         VARCHAR(50),
             last_updated_ts     DATETIME,
             user_deadline_prd   VARCHAR(8),
             pltf_deadline_dt    DATETIME,
             initial_input_dt    DATETIME,
             design_acc_dt       DATETIME,
             design_sub_dt       DATETIME,
+            batch_done_dt       DATETIME,
             print_done_dt       DATETIME,
             packing_done_dt     DATETIME,
             shipped_dt          DATETIME,
             google_folder_url   VARCHAR(2000),
             google_file_url     VARCHAR(2000),
-            thumb_url           VARCHAR(2000),
-
-            buyer_id            VARCHAR(50),
-            ecom_order_id	      VARCHAR(100),
-            ecom_order_status	  VARCHAR(10),
-            invoice_ref         VARCHAR(50)
+            thumb_url           VARCHAR(2000)
         )  ENGINE=INNODB;
 
     -- orderitem_tr
         CREATE TABLE IF NOT EXISTS orderitem_tr (
             id              INT AUTO_INCREMENT PRIMARY KEY,
-            ecom_order_id   INT NOT NULL,
+            ecom_order_id   VARCHAR(100) NOT NULL,
             ecom_product_id VARCHAR(200),
             product_name    VARCHAR(200),
             quantity        INT,
-            product_price   DECIMAL
+            product_price   DECIMAL,
+            thumb_url       VARCHAR(2000)
         )  ENGINE=INNODB;
 
     -- ordertracking_th
@@ -78,6 +82,16 @@
             created_dt      DATETIME
         )  ENGINE=INNODB;
 
+    -- orderbatchfile_tm
+        CREATE TABLE IF NOT EXISTS orderbatchfile_tm (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            batch_name          VARCHAR(10),
+            remarks             TEXT,
+            create_dt           DATETIME,
+            printed_dt          DATETIME,
+            designer_user_id    INT,
+            printer_user_id     INT
+        )  ENGINE=INNODB;
     -- globalparam_tm
         CREATE TABLE IF NOT EXISTS globalparam_tm (
             id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -104,8 +118,76 @@
             id                  INT AUTO_INCREMENT PRIMARY KEY,
             platform_name       VARCHAR(50),
             initial_sync        BIGINT,
-            last_synced         BIGINT
+            last_synced         BIGINT,
+            access_token        VARCHAR(32),
+            refresh_token       VARCHAR(32),
+            refresh_token_expire_YYYYMMDD VARCHAR(32)
         )  ENGINE=INNODB;
+
+
+    -- ordercomment_th
+        CREATE TABLE IF NOT EXISTS ordercomment_th (
+            id              INT AUTO_INCREMENT PRIMARY KEY,
+            creator_id      INT NOT NULL,
+            order_id        INT NOT NULL,
+            comment_text    TEXT,
+            comment_date    DATETIME DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=INNODB;
+
+    -- orderdocument_tm
+        CREATE TABLE IF NOT EXISTS orderdocument_tm (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            order_id            INT,
+            doc_number          VARCHAR(100),
+            doc_type            VARCHAR(1),
+            cust_name           VARCHAR(30),
+            cust_addr_1         VARCHAR(45),
+            cust_addr_2         VARCHAR(45),
+            cust_addr_3         VARCHAR(45),
+            cust_addr_4         VARCHAR(45),
+            cust_phone          VARCHAR(30),
+            cust_fax            VARCHAR(30),
+            due_date            VARCHAR(30),
+            discount            DECIMAL,
+            generated_date		DATETIME
+        ) ENGINE=INNODB;
+
+    -- orderdocumentitem_tr
+        CREATE TABLE IF NOT EXISTS orderdocumentitem_tr (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            order_doc_id        INT,
+            item_name           VARCHAR(60),
+            item_price          DECIMAL,
+            item_qty            INT
+        ) ENGINE=INNODB;
+
+    -- orderanku_item_tm
+        CREATE TABLE IF NOT EXISTS orderanku_item_tm (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            recipient_name      VARCHAR(100),
+            recipient_phone     VARCHAR(20),
+            recipient_provinsi  VARCHAR(50),
+            recipient_kota_kab  VARCHAR(50),
+            recipient_kecamatan VARCHAR(50),
+            recipient_kelurahan VARCHAR(50),
+            recipient_address   VARCHAR(200),
+            order_details       VARCHAR(1000),
+            order_bank          VARCHAR(100),
+            order_total         DECIMAL,
+            created_date		DATETIME,
+            print_date          DATETIME,
+            paid_date           DATETIME,
+            seller_name         VARCHAR(100),
+            seller_phone        VARCHAR(20),
+            is_active           BIT DEFAULT 1
+        );
+
+    -- orderanku_seller_tr
+        CREATE TABLE IF NOT EXISTS orderanku_seller_tr (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            seller_name         VARCHAR(100),
+            seller_phone        VARCHAR(20)
+        )
 
 -- Param
 	insert into hcxprocesssyncstatus_tm(platform_name, initial_sync)
@@ -113,6 +195,11 @@
 	from dual
     WHERE NOT EXISTS (SELECT * FROM hcxprocesssyncstatus_tm WHERE platform_name = "TOKOPEDIA");
     
+    INSERT INTO hcxprocesssyncstatus_tm(platform_name)
+    SELECT "SHOPEE"
+    FROM dual
+    WHERE NOT EXISTS (SELECT * FROM hcxprocesssyncstatus_tm WHERE platform_name = "SHOPEE");
+
 	insert into role_tm(role_name)
 	select "admin" 		UNION ALL
     select "designer" 	UNION ALL
@@ -124,3 +211,19 @@
     insert into user_tm(created_dt, role_id, username, password)
     select now(), NULL, 'System', NULL UNION ALL
     select now(), 1,    'admin', '$2a$12$mrrY0mbxb8L35bVkKBMIVeUuWdiqcbDiYjtR5qucxh3y2v50ZqGKu';
+
+    INSERT INTO globalparam_tm (app_name, param_name1, param_value1)
+    SELECT "INTERNAL_ORDER_STATUS", "000", "New Order"          UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "100", "Waiting Design"     UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "200", "Pending Approval"   UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "250", "Pending BatchFile"  UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "300", "Printing"           UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "400", "Packing"            UNION ALL
+    SELECT "INTERNAL_ORDER_STATUS", "999", "Complete";
+
+    INSERT INTO orderanku_seller_tr (id, seller_name, seller_phone, is_active)
+    VALUES (1, 'Herculex', '08151912345', 1) AS new
+    ON DUPLICATE KEY UPDATE
+    seller_name = new.seller_name,
+    seller_phone = new.seller_phone,
+    is_active = new.is_active;
